@@ -1,0 +1,82 @@
+https://docs.python.org/2/library/heapq.html
+
+In python heap is basically a priority queue implementation. Python heap implements min heap.
+
+What is heap:
+--------------------------------------------------------------------------------------------
+Heaps are binary trees for which every parent node has a value less than or equal
+to any of its children. This implementation uses arrays for which heap[k] <= heap[2*k+1]
+and heap[k] <= heap[2*k+2] for all k, counting elements from zero.
+For the sake of comparison, non-existing elements are considered to be infinite.
+The interesting property of a heap is that its smallest element is always the root, heap[0].
+
+Python uses
+--------------------------------------------------------------------------------------------
+(a) zero-based indexing. This makes the relationship between the index for a node and the
+    indexes for its children slightly less obvious, but is more suitable since Python
+    uses zero-based indexing.
+(b) Our pop method returns the smallest item
+
+These two make it possible to view the heap as a regular Python list without
+surprises: heap[0] is the smallest item, and heap.sort() maintains the heap invariant!
+
+To create a heap, use a list initialized to [], or you can transform a populated list into
+a heap via function heapify().
+
+
+Priority Queue Implementation Notes
+--------------------------------------------------------------------------------------------
+A priority queue is common use for a heap, and it presents several implementation challenges:
+
+1. Sort stability: how do you get two tasks with equal priorities to be returned in the order
+they were originally added?
+
+2. VVI: In the future with Python 3, tuple comparison breaks for (priority, task) pairs if
+   the priorities are equal and the tasks do not have a default comparison order.
+
+3. If the priority of a task changes, how do you move it to a new position in the heap?
+
+4. Or if a pending task needs to be deleted, how do you find it and remove it from the queue?
+
+A solution to the first two challenges is to store entries as 3-element list including
+the priority, an entry count, and the task. The entry count serves as a tie-breaker so
+that two tasks with the same priority are returned in the order they were added. And
+since no two entry counts are the same, the tuple comparison will never attempt to
+directly compare two tasks.
+
+The remaining challenges revolve around finding a pending task and making changes to its
+priority or removing it entirely. Finding a task can be done with a dictionary pointing
+to an entry in the queue.
+
+Removing the entry or changing its priority is more difficult because it would break the
+heap structure invariants. So, a possible solution is to mark the existing entry as removed
+and add a new entry with the revised priority:
+
+pq = []                         # list of entries arranged in a heap
+entry_finder = {}               # mapping of tasks to entries
+REMOVED = '<removed-task>'      # placeholder for a removed task
+counter = itertools.count()     # unique sequence count
+
+def add_task(task, priority=0):
+    'Add a new task or update the priority of an existing task'
+    if task in entry_finder:
+        remove_task(task)
+    count = next(counter)
+    entry = [priority, count, task]
+    entry_finder[task] = entry
+    heappush(pq, entry)
+
+def remove_task(task):
+    'Mark an existing task as REMOVED.  Raise KeyError if not found.'
+    entry = entry_finder.pop(task)
+    entry[-1] = REMOVED
+
+def pop_task():
+    'Remove and return the lowest priority task. Raise KeyError if empty.'
+    while pq:
+        priority, count, task = heappop(pq)
+        if task is not REMOVED:
+            del entry_finder[task]
+            return task
+    raise KeyError('pop from an empty priority queue')
+

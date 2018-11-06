@@ -1,0 +1,69 @@
+Methods in itertools:
+---------------------
+- Functional tools for creating and using iterators.
+- Returns an count object whose .__next__() method returns consecutive values.
+
+Every Iterator object has three necessary characteristics.
+  1. They have __next__ function.
+  2. __next__ function returns values and finally throws StopIteration.
+  3. They have __iter__ function.
+
+------------------------ Example --------------------------------
+class MyIterClass:
+   def __init__(self):
+       self.n = 0
+       self.val = [10, 20, 30]
+
+   def __next__(self):
+       while(self.n < len(self.val)):
+           i = self.n
+           self.n += 1
+           return self.val[i]
+         
+       raise StopIteration
+
+   def __iter__(self):
+       return self
+
+# Usage
+a = MyIterClass()
+while(True):
+    try:
+        print(a.__next__(), end=" ")
+    except StopIteration:
+        print()
+        break
+------------------------------------------------------------------
+
+
+1. count(start=0, step=1)
+----------------------------
+"""
+	 which is equivalent to:
+
+  def count(start=0, step=1):
+     x = start
+     while True:
+         yield x
+         x += step
+"""
+Usage:
+
+itr_obj = count(start=10, step=2)
+
+for i in range(5):
+  print(itr_obj.__next__(), end=' ', file=sys.stdout)
+
+
+Output: 10 12 14 16 18 
+
+
+2. cycle(iterable)
+-----------------------------
+"""
+Return a cycle object whose .__next__() method returns the values indefinitely in cycle.
+i.e; Returns elements from the iterable until it is exhausted and then it repeat the sequence indefinitely.
+
+It's __iter__() method implements iter(self).s
+"""
+

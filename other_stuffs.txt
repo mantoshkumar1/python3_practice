@@ -1,0 +1,35 @@
+print(...)
+    print(value, ..., sep=' ', end='\n', file=sys.stdout)
+
+    Prints the values to a stream, or to sys.stdout by default.
+    Optional keyword arguments:
+    file: a file-like object (stream); defaults to the current sys.stdout.
+    sep:  string inserted between values, default a space.
+    end:  string appended after the last value, default a newline.
+
+Example:
+for i in range(5):
+    print(i, end=' ')
+
+Output: 0 1 2 3 4 
+(Notice: There is a space after '4' as well.
+-------------------------------------------------------------------------------
+
+Dictionary or set objects are not indexed thus accessing their values through index won't work.
+Example:
+set_a = {10, 20, 30}
+print(set_a[0]) #TypeError: 'set' object does not support indexing
+
+Right way 1:
+for i in set_a:
+  print(i)
+
+
+Right way 2:
+for index, val in enumerate(set_a):
+  print(index, val)
+
+Right way 3:
+for i in iter(x):
+  print(i)
+

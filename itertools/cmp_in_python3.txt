@@ -1,0 +1,177 @@
+https://portingguide.readthedocs.io/en/latest/comparisons.html
+
+1. Comparing and Sorting
+--------------------------------------------------------------------------------------------
+Python 3 is strict when comparing objects of disparate types. It also drops
+cmp-based comparison and sorting in favor of rich comparisons and key-based sorting,
+modern alternatives that have been available at least since Python 2.4. Details
+and porting strategies follow.
+
+1.1. Unorderable Types
+----------------------
+The strict approach to comparing in Python 3 makes it generally impossible to
+compare different types of objects.
+
+For example, in Python 2, comparing int and str works (with results that are
+unpredictable across Python implementations):
+
+>>> 2 < '2'
+True (in Python 2)
+but in Python 3, it fails with a well described error message:
+
+>>> 2 < '2'  (in Python 3)
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module>
+TypeError: unorderable types: int() < str()
+The change usually manifests itself in sorting lists: in Python 3, lists with items
+ of different types are generally not sortable.
+
+If you need to sort heterogeneous lists, or compare different types of objects,
+implement a key function to fully describe how disparate types should be ordered.
+
+1.3. Rich Comparisons
+---------------------
+The __cmp__() special method is no longer honored in Python 3.
+
+In Python 2, __cmp__(self, other) implemented comparison between two objects,
+returning a negative value if self < other, positive if self > other, and zero
+if they were equal.
+
+
+In Python 3, we assign a special method to each operator:
+Operator	Method
+==      	__eq__
+!=	        __ne__
+<       	__lt__
+<=	        __le__
+>       	__gt__
+>=	        __ge__
+
+Each takes the same two arguments as cmp, and must return either a result
+value (typically Boolean), raise an exception, or return NotImplemented to
+signal the operation is not defined.
+
+In Python 3, the cmp style of comparisons was dropped. All objects that
+implemented __cmp__ must be updated to implement all of the rich methods
+instead. (There is one exception: on Python 3, __ne__ will, by default,
+delegate to __eq__ and return the inverted result . However, this is not
+the case in Python 2.)
+
+To avoid the hassle of providing all six functions, you can implement
+__eq__, __ne__, and only one of the ordering operators, and use the
+functools.total_ordering() decorator to fill in the rest.
+from functools import total_ordering
+
+@total_ordering
+class Person(object):
+
+    def __init__(self, firstname, lastname):
+        self.first = firstname
+        self.last = lastname
+
+    def __eq__(self, other):
+        return ((self.last, self.first) == (other.last, other.first))
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __lt__(self, other):
+        return ((self.last, self.first) < (other.last, other.first))
+
+However, it is encouraged to explicitly include all the 6 methods:
+
+class Person(object):
+
+    def __init__(self, firstname, lastname):
+        self.first = firstname
+        self.last = lastname
+
+    def __eq__(self, other):
+        return ((self.last, self.first) == (other.last, other.first))
+
+    def __ne__(self, other):
+        return ((self.last, self.first) != (other.last, other.first))
+
+    def __lt__(self, other):
+        return ((self.last, self.first) < (other.last, other.first))
+
+    def __le__(self, other):
+        return ((self.last, self.first) <= (other.last, other.first))
+
+    def __gt__(self, other):
+        return ((self.last, self.first) > (other.last, other.first))
+
+    def __ge__(self, other):
+        return ((self.last, self.first) >= (other.last, other.first))
+
+    def __repr__(self):
+        return "%s %s" % (self.first, self.last)
+
+
+NOTE about cmp function:
+--------------------------------------------------------------------------------------------
+As part of the move away from cmp-style comparisons, the cmp() function was removed in Python 3.
+
+If it is necessary (usually to conform to an external API), you can provide it with this code:
+
+def cmp(x, y):
+    """
+    Replacement for built-in function cmp that was removed in Python 3
+
+    Compare the two objects x and y and return an integer according to
+    the outcome. The return value is negative if x < y, zero if x == y
+    and strictly positive if x > y.
+    """
+
+    return (x > y) - (x < y)
+
+NOTE about cmp argument:
+--------------------------------------------------------------------------------------------
+In Python 2, .sort() or sorted() functions have a cmp parameter, which
+determines the sort order. The argument for cmp is a function that,
+like all cmp-style functions, returns a negative, zero, or positive
+result depending on the order of its two arguments.
+
+provide key = functools.cmp_to_key()
+
+Example:
+    Move all the 0's to right in a list of 1s and 0s.
+
+    import functools
+
+    def mycmp(a, b):
+        if a == 0:
+            return 1
+        if b == 0:
+            return -1
+
+        return 0
+    arr = [1, 0, 1,0,0, 1, 1]
+    sorted(arr, key=functools.cmp_to_key(cmp))  # [1, 1, 1, 1, 0, 0, 0]
+
+
+VVI NOTE:
+--------------------------------------------------------------------------------------------
+https://docs.python.org/2/library/heapq.html#priority-queue-implementation-notes
+
+Python 3, tuple comparison breaks for (priority, Object) pairs if the priorities
+are equal and the Object do not have a default comparison order (anything except == and !=)
+
+>> class A:
+>>    pass
+>>> (1, A()) > (1, A())
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: unorderable types: A() > A()
+
+Notice that if (1, A()) == (1, A()) will work and give False as by default class implements
+== and !=. In python2, it compares based on id. In Python3, it compares on first className and then id.
+
+However if you try with objects that has defined comparison order, then you wont see any issue:
+Example: (1, "ab") > (1, "bc")
+
+A solution to the this challenge is to store entries as 3-element list
+including the priority, an entry count, and the task. The entry count serves
+as a tie-breaker so that two tasks with the same priority are returned in the
+order they were added. And since no two entry counts are the same, the tuple
+comparison will never attempt to directly compare two tasks.

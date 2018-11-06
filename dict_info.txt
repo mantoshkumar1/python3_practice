@@ -1,0 +1,36 @@
+In dictionary, the key must be a valid identifier and MUST be immutable.
+
+According to Python doc (https://docs.python.org/2/reference/lexical_analysis.html#identifiers):
+	Identifiers (also referred to as names) are described by the following lexical definitions:
+		identifier ::=  (letter|"_") (letter | digit | "_")*
+		letter     ::=  lowercase | uppercase
+		lowercase  ::=  "a"..."z"
+		uppercase  ::=  "A"..."Z"
+		digit      ::=  "0"..."9"
+
+Thus a1 is a valid identifier but 1a is not. Similarly a is a valid identifer but 1 is not.
+
+class dict(object)
+ |  dict() -> new empty dictionary
+ |  dict(mapping) -> new dictionary initialized from a mapping object's
+ |      (key, value) pairs
+ |  dict(iterable) -> new dictionary initialized as if via:
+ |      d = {}
+ |      for k, v in iterable:
+ |          d[k] = v
+ |  dict(**kwargs) -> new dictionary initialized with the name=value pairs
+ |      in the keyword argument list.  For example:  dict(one=1, two=2)
+ |
+
+
+
+
+Question: python SyntaxError with dict(1=…), but {1:…} works
+https://stackoverflow.com/questions/10390606/python-syntaxerror-with-dict1-but-1-works
+Answer: This is not a dict issue, but an artifact of Python syntax: keyword arguments
+        must be valid identifiers, and 1 and 2 are not.
+
+When you want to use anything that is not a string following Python identifier rules as
+a key, use the {} syntax. The constructor keyword argument syntax is just there for
+convenience in some special cases.
+
