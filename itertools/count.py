@@ -13,6 +13,5 @@ Return a count object whose .__next__() method returns consecutive values which 
 itr_obj = count(start=10, step=2)
 
 for i in range(5):
-  print(itr_obj.__next__(), end=' ', file=sys.stdout)
+    print(itr_obj.__next__(), end=' ', file=sys.stdout)
 
-  

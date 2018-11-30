@@ -62,7 +62,7 @@ def f():
   9   except StopIteration as e:
  10     print(e.value)
  11     break
-~    
+
 
 .........................................
 next(...)

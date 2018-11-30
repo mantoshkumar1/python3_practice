@@ -4,33 +4,34 @@ Every Iterator object has three necessary characteristics.
   2. __next__ function returns values and finally throws StopIteration.
   3. They have __iter__ function which refers to self.
 """
+
+
 # ------------------------ Example -------------------------------- #
 class MyIterClass:
-   def __init__(self):
-       self.n = 0
-       self.val = [10, 20, 30]
+    def __init__(self):
+        self.n = 0
+        self.val = [10, 20, 30]
+    
+    def __next__(self):
+        while self.n < len(self.val):
+            i = self.n
+            self.n += 1
+            return self.val[i]
+        
+        raise StopIteration
+    
+    def __iter__(self):
+        return self
 
-   def __next__(self):
-       while(self.n < len(self.val)):
-           i = self.n
-           self.n += 1
-           return self.val[i]
-         
-       raise StopIteration
-
-   def __iter__(self):
-       return self
 
 # Usage of MyIterClass
 a = MyIterClass()
-while(True):
+while True:
     try:
         print(a.__next__(), end=" ")
     except StopIteration:
         print()
         break
-
-
 
 """
 Generator: The generator is the elegant brother of iterator that allows you to write
@@ -74,19 +75,20 @@ because, as in any function, return simply exits, but
 [42]
 """
 
+
 # Generator Example #
 def gen(start, end):
-    while (start <= end):
-       yield start
-       start += 1
+    while start <= end:
+        yield start
+        start += 1
+    
+    # at the end of loop, generator automatically raises StopIteration  # (or even return
+    # statement causes StopIteration to be raised)
 
-     # at the end of loop, generator automatically raises StopIteration
-     # (or even return statement causes StopIteration to be raised)
 
 a = gen(1, 5)
-while(1):
-  try:
-    print(a.__next__())
-  except StopIteration:
-    break
-
+while 1:
+    try:
+        print(a.__next__())
+    except StopIteration:
+        break

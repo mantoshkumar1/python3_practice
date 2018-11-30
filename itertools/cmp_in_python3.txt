@@ -164,7 +164,7 @@ Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 TypeError: unorderable types: A() > A()
 
-Notice that if (1, A()) == (1, A()) will work and give False as by default class implements
+Notice that (1, A()) == (1, A()) will work and give False as by default class implements
 == and !=. In python2, it compares based on id. In Python3, it compares on first className and then id.
 
 However if you try with objects that has defined comparison order, then you wont see any issue:
