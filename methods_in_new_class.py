@@ -1,5 +1,7 @@
 # http://www.java2s.com/Tutorials/Python/Class/Overload_len_method_for_len_function.htm
 # http://farmdev.com/src/secrets/magicmethod/index.html#introducing-getitem
+
+
 class NewClass:
     def __init__(self):
         self.arr = [10, 20]

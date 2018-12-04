@@ -1,0 +1,93 @@
+sorted(iterable, key=None, reverse=False)
+    | Return a new list containing all items from the iterable in ascending order.
+    |
+    | A custom key function can be supplied to customise the sort order, and the
+    | reverse flag can be set to request the result in descending order.
+
+
+class reversed(object)
+ |  reversed(sequence) -> reverse iterator over values of the sequence
+ |
+ |  Return a reverse iterator
+
+
+Example:
+>>> s =  'aaabbc'
+>>> sorted(arr, key=s.count)
+['c', 'b', 'b', 'a', 'a', 'a']
+
+
+Example:
+>>> arr = ['a', 'a', 'a', 'b', 'b', 'c']
+>>> arr.sort(key=arr.count)
+>>> arr
+['a', 'a', 'a', 'b', 'b', 'c']
+
+
+Example:
+>>> arr = ('a', 'a', 'a', 'b', 'b', 'c')
+>>> sorted(arr, key=arr.count)
+['c', 'b', 'b', 'a', 'a', 'a']
+
+
+Example: VVI
+If you have to sort an iterable object where string value needs to be sorted in reverse order,
+you can't really use a "key=-str_val" in sorting function. Here it is better to use little bit
+of mathematics though. See the below example:
+
+arr = [('Baker', 20), ('Charlie', 20), ('Able', 10), ('Dog', 15)]
+
+Sort arr in such a way that when items are sorted in ascending order but if int values are same,
+then the item must be sorted in descending order (means larger str_val should come first).
+
+So, key must be (int, -str) => ~(~(int, ~str)) [Remember ~(~A) = A means "negation of negation of A" is A itself]
+   ~(~(int, ~str)) => ~(~int, str)
+
+>>> arr.sort(key=lambda x: (-x[1], x[0], reverse=True)
+>>> arr
+[('Able', 10), ('Dog', 15), ('Charlie', 20), ('Baker', 20)]
+
+NOTE about cmp function:
+--------------------------------------------------------------------------------------------
+As part of the move away from cmp-style comparisons, the cmp() function was removed in Python 3.
+
+If it is necessary (usually to conform to an external API), you can provide it with this code:
+
+def cmp(x, y):
+    """
+    Replacement for built-in function cmp that was removed in Python 3
+
+    Compare the two objects x and y and return an integer according to
+    the outcome. The return value is negative if x < y, zero if x == y
+    and strictly positive if x > y.
+    """
+
+    return (x > y) - (x < y)
+
+NOTE about cmp argument:
+--------------------------------------------------------------------------------------------
+In Python 2, .sort() or sorted() functions have a cmp parameter, which
+determines the sort order. The argument for cmp is a function that,
+like all cmp-style functions, returns a negative, zero, or positive
+result depending on the order of its two arguments.
+
+provide key = functools.cmp_to_key()
+
+Example:
+arr = [('Baker', 20), ('Charlie', 20), ('Able', 10), ('Dog', 15)]
+
+Sort arr in such a way that when items are sorted in ascending order but if int values are same,
+then the item must be sorted in descending order (means larger str_val should come first).
+
+def cmp(x, y):
+    return (x > y) - (x < y)
+
+def my_cmp(a, b):
+    if a[1] != b[1]:
+        return cmp(a[1], b[1])
+    return -cmp(a[0], b[0])   # notice the -ve sign
+
+>>> arr.sort(key=cmp_to_key(my_cmp))
+>>> arr
+[('Able', 10), ('Dog', 15), ('Charlie', 20), ('Baker', 20)]
+>>>

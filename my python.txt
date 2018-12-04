@@ -2,13 +2,12 @@
 And for a reward, here is the comment, I wrote to remember this the first time I did this error:
 
 Python's conditional expression is a if C else b and can't be used as:
+[a for i in items if C else b]  => WRONG
 
-[a for i in items if C else b]
 The right form is:
-
 [a if C else b for i in items]
-Even though there is a valid form:
 
+Even though there is a valid form:
 [a for i in items if C]
 But that isn't the same as that is how you filter by C, but they can be combined:
 
@@ -17,10 +16,21 @@ But that isn't the same as that is how you filter by C, but they can be combined
 http://www.pythonforbeginners.com/basics/list-comprehensions-in-python
 http://blog.cdleary.com/2010/04/learning-python-by-example-list-comprehensions/
 
+Multiple "if" condition for list comprehension:
+-----------------------------------------------
+Adding multiple conditionals is as easy as simply adding the conditions one after another in your
+comprehension. However, you need to be careful about what you are trying to do in the problem.
+Remember, that the consecutive if statements work as if they had and clauses between them.
+[i for i in items if Condition1 if Condition2]
+Example: [i for i in range(10) if i%2==0 if i>4]
+Output is: [6, 8]
+
 
 list-comprehension always returns a list.
 [x for x in range(5)] => list
-(x for x in range(5)) => generator object
+(x for x in range(5)) => generator object (Notice the difference)
+{x for x in [1, 1, 2]} => set
+We could write multiple "if" condition generator comprehension.
 
 
 https://www.datacamp.com/community/tutorials/python-iterator-tutorial
@@ -36,6 +46,36 @@ sum(x) = 0
 On the other hand, list (as a sequence) can be used any number of time and they will produce the same result.
 sum(x) = 5
 sum(x) = 5
+
+
+Dictionary comprehension:
+-------------------------
+https://www.datacamp.com/community/tutorials/python-dictionary-comprehension
+Remember key in dict must be unique and hashable then only you could use dictionary comprehension.
+
+items = ['a', 'b']
+d = {k: 1 for k in items}
+
+given_dict = {1: 10, 2: 20, 4: 30, 5: 30}
+d = {k: v**2 for k,v in given_dict.items()} => {1:100, 2:400, 4, 900, 5:900}
+
+d = {k: v**2 for k,v in given_dict.items() CONDITION1 CONDITION2}
+Example: d = {k:v**2 for k, v in given_dict.items() if k %2==0 if v>=30 } => {4: 900}
+
+d = {k:('even' if v%2==0 else 'odd') for (k,v) in dict1.items()}
+d = {(k if k> 2 else k+10):(v if k>2 else 'z') for k, v in a.items()}
+d = {k :(v if k>2 else 'z') for k, v in a.items()}
+
+Nested Dictionary Comprehension
+--------------------------------
+nested_dict = {'first':{'a':1}, 'second':{'b':2}}
+float_dict = {outer_k: {float(inner_v) for (inner_k, inner_v) in outer_v.items()} for (outer_k, outer_v) in nested_dict.items()}
+print(float_dict)
+{'first': {1.0}, 'second': {2.0}}
+
+
+
+
 
 Obviously generator are more memory efficient.
 def f():
