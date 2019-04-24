@@ -1,0 +1,164 @@
+Python OrderedDict is just like a regular dictionary in python, but it also saves the order in which pairs were added. Actually, it is a subclass of ‘dict’.
+
+If a new entry overwrites an existing entry, the original insertion position is left unchanged. Deleting an entry and subsequentally "Reinserting" it will move it to the end.
+
+- Overwriting an existing entry
+------------------------------------------------------------------------------
+If a new entry overwrites an existing entry, the original insertion position is left unchanged.
+
+>>> od = OrderedDict(a=1, b=12, c=3)
+>>> od
+OrderedDict([('a', 1), ('b', 12), ('c', 3)])
+>>> od['b'] = 200
+>>> od
+OrderedDict([('a', 1), ('b', 200), ('c', 3)])
+
+
+- Deleting and Reinserting a Key
+------------------------------------------------------------------------------
+When we delete a key and then reinsert it, it is ordered to the end of the new order.
+>>> od = OrderedDict(a=1, b=12, c=3)
+>>> od
+OrderedDict([('a', 1), ('b', 12), ('c', 3)])
+>>> od.pop('b')
+12
+>>> od['b'] = 12
+>>> od
+OrderedDict([('a', 1), ('c', 3), ('b', 12)])
+
+
+- Comparision
+------------------------------------------------------------------------------
+In dictionary, order does not matter. However, in OrderedDict, order matters:
+d1 = {'a': 2, 'b': 3}
+d2 = {'b': 3, 'a': 2}
+>>> d1 == d2
+True
+
+od1 = OrderedDict()
+od1['a'] = 2
+od1['b'] = 3
+
+od2 = OrderedDict()
+od2['b'] = 3
+od2['a'] = 2
+
+>>> od1 == od2
+False
+
+How to Reorder Python OrderedDict?
+------------------------------------------------------------------------------
+To reorder a key-value pair to the front or the end of an OrderedDict in python, we have the move_to_end() method.
+od = OrderedDict([(‘a’, 1), (‘e’, 5), (‘d’, 4), (‘b’, 2), (‘c’, 3)])
+od.move_to_end('e', last=True)
+
+This function moves an existing element to the end (or beginning if last==False).
+Raises KeyError if the element does not exist.
+When last=True (which is default) , acts like a fast version of self[key]=self.pop(key).
+If last=False, then it moves the element at the beginning of OrderedDict.
+
+
+Python popitem()
+------------------------------------------------------------------------------
+The popitem() method in Python may take 0 or 1 argument- ‘last’. When ‘last’ is true, LIFO is followed to delete, otherwise, FIFO is followed. When we don’t pass an argument, last is assumed to be true.
+Let’s take a new Python OrderedDict for this.
+
+>>> g=OrderedDict()
+>>> g['d']=4
+>>> g['b']=2
+>>> g['a']=1
+>>> g['c']=3
+>>> g['e']=5
+>>> g
+OrderedDict([(‘d’, 4), (‘b’, 2), (‘a’, 1), (‘c’, 3), (‘e’, 5)])
+Now, let’s start popping.
+
+>>> g.popitem(last=False)
+(‘d’, 4)
+
+>>> g.popitem()
+(‘e’, 5)
+
+>>> g.popitem(last=True)
+(‘c’, 3)
+From collections import OrderedDict
+
+od = OrderedDict()
+od = OrderedDict(a=2, b=3)
+od = OrderedDict({'a': 2, 'b': 3})
+od = OrderedDict([('a', 2), ('b', 3)])
+
+od.update(c=4)
+od.update({'c': 4})
+od.update([('c', 4)])
+od['c']=100
+
+Help on class OrderedDict in module collections:
+------------------------------------------------------------------------------
+
+class OrderedDict(builtins.dict)
+ |  Dictionary that remembers insertion order
+ |
+ |  Method resolution order:
+ |      OrderedDict
+ |      builtins.dict
+ |      builtins.object
+ |
+ |  Methods defined here:
+ |
+ |  __init__(self, /, *args, **kwargs)
+ |      Initialize self.  See help(type(self)) for accurate signature.
+ |
+ |  __reversed__(...)
+ |      od.__reversed__() <==> reversed(od)
+ |
+ |  clear(...)
+ |      od.clear() -> None.  Remove all items from od.
+ |
+ |  copy(...)
+ |      od.copy() -> a shallow copy of od
+ |
+ |  fromkeys(...) from builtins.type
+ |      OD.fromkeys(S[, v]) -> New ordered dictionary with keys from S.
+ |      If not specified, the value defaults to None.
+ |
+ |  items(...)
+ |      D.items() -> a set-like object providing a view on D's items
+ |
+ |  keys(...)
+ |      D.keys() -> a set-like object providing a view on D's keys
+ |
+ |  move_to_end(...)
+ |      Move an existing element to the end (or beginning if last==False).
+ |
+ |      Raises KeyError if the element does not exist.
+ |      When last=True, acts like a fast version of self[key]=self.pop(key).
+ |
+ |  pop(...)
+ |      od.pop(k[,d]) -> v, remove specified key and return the corresponding
+ |      value.  If key is not found, d is returned if given, otherwise KeyError
+ |      is raised.
+ |
+ |  popitem(self, /, last=True)
+ |      Remove and return a (key, value) pair from the dictionary.
+ |
+ |      Pairs are returned in LIFO order if last is true or FIFO order if false.
+ |
+ |  setdefault(...)
+ |      od.setdefault(k[,d]) -> od.get(k,d), also set od[k]=d if k not in od
+ |
+ |  update(...)
+ |      D.update([E, ]**F) -> None.  Update D from dict/iterable E and F.
+ |      If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+ |      If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+ |      In either case, this is followed by: for k in F:  D[k] = F[k]
+ |
+ |  values(...)
+ |      D.values() -> an object providing a view on D's values
+ |
+ |  get(...)
+ |      D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
+
+ References:
+ [1]. https://data-flair.training/blogs/python-ordereddict/
+

@@ -34,3 +34,81 @@ When you want to use anything that is not a string following Python identifier r
 a key, use the {} syntax. The constructor keyword argument syntax is just there for
 convenience in some special cases.
 
+
+
+Python Dictionary fromkeys():
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+The fromkeys() method creates a new dictionary from the given sequence of elements
+with a value provided by the user.
+The syntax of fromkeys() method is:
+
+dictionary.fromkeys(sequence[, value])
+
+fromkeys() Parameters:
+----------------------
+The fromkeys() method takes two parameters:
+
+1. sequence - sequence of elements which is to be used as keys for the new dictionary
+2. value (Optional) - value which is set to each each element of the dictionary
+
+Return value from fromkeys()
+----------------------------
+Reference: https://www.programiz.com/python-programming/methods/dictionary/fromkeys
+
+The fromkeys() method returns a new dictionary with the given sequence of elements
+as the keys of the dictionary. If the value argument is set, each element of the
+newly created dictionary is set to the provided value.
+
+Example 1: Create a dictionary from a sequence of keys
+# vowels keys
+>>>  keys = 'aeiou'  # any iterable sequence
+>>>  vowels = dict.fromkeys(keys)
+>>>  print(vowels)
+{'a': None, 'u': None, 'o': None, 'e': None, 'i': None}
+
+
+Example 2: Create a dictionary from a sequence of keys with value
+# vowels keys
+>>>  keys = {'a', 'e', 'i', 'o', 'u' }
+>>>  value = 'vowel'
+>>>  vowels = dict.fromkeys(keys, value)
+>>>  print(vowels)
+{'a': 'vowel', 'u': 'vowel', 'o': 'vowel', 'e': 'vowel', 'i': 'vowel'}
+
+
+Example 3: Create a dictionary from mutable object list
+# vowels keys
+>>>  keys = {'a', 'e', 'i', 'o', 'u' }
+>>>  value = [1]
+>>>  vowels = dict.fromkeys(keys, value)
+>>>  print(vowels)
+{'a': [1], 'u': [1], 'o': [1], 'e': [1], 'i': [1]}
+
+# updating the value
+>>>  value.append(2)
+>>>  print(vowels)
+{'a': [1, 2], 'u': [1, 2], 'o': [1, 2], 'e': [1, 2], 'i': [1, 2]}
+
+
+If the provided value is a mutable object (whose value can be modified) like
+list, dictionary, etc., when the mutable object is modified, each element of
+the sequence also gets updated. This is because, each element is assigned a
+reference to the same object (points to the same object in the memory).
+
+To avoid this issue, we use dictionary comprehension.
+>>>  keys = {'a', 'e', 'i', 'o', 'u' }
+>>>  value = [1]
+>>>  vowels = { key : list(value) for key in keys }
+# you can also use { key : value[:] for key in keys }
+>>>  print(vowels)
+{'a': [1], 'u': [1], 'o': [1], 'e': [1], 'i': [1]}
+>>>  value.append(2)  # updating the value
+>>>  print(vowels)
+{'a': [1], 'u': [1], 'o': [1], 'e': [1], 'i': [1]}
+
+Here, for each key in keys, a new list from value is created and assigned to it.
+In essence, value isn't assigned to the element but a new list is created from
+it, which is then assigned to each element in the dictionary.
+
+
