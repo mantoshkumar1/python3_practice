@@ -28,7 +28,7 @@ Output is: [6, 8]
 
 list-comprehension always returns a list.
 [x for x in range(5)] => list
-(x for x in range(5)) => generator object (Notice the difference)
+(x for x in range(5)) => generator object (Notice the difference - it does not return a 'set')
 {x for x in [1, 1, 2]} => set
 We could write multiple "if" condition generator comprehension.
 

@@ -34,7 +34,7 @@ while True:
         break
 
 """
-Generator: The generator is the elegant brother of iterator that allows you to write
+Generator: The generator is the elegant brother of iterator.txt that allows you to write
 iterators like the one you saw earlier, but in a much easier syntax where you do not
 have to write classes with __iter__() and __next__() methods.
 
@@ -44,11 +44,11 @@ it can work on this local variable value again. So unlike a normal function, whe
 on each call it starts with new set of variables - a generator will resume the
 execution where it was left off.
 
-lazy factory is a concept behind the generator and the iterator. Which means they are
+lazy factory is a concept behind the generator and the iterator.txt. Which means they are
 idle until you ask it for a value. Only when asked is when they get to work and produce
 a single value, after which it turns idle again. This is a good approach to work with
 lots of data. If you do not require all the data at once and hence no need to load all
-the data in the memory, you can use a generator or an iterator which will pass you each
+the data in the memory, you can use a generator or an iterator.txt which will pass you each
 piece of data at a time.
 
 With Python2, a generator can use a return statement, but 'only without' a return

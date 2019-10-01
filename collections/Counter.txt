@@ -14,12 +14,15 @@ Three Ways to initialize a counter
     c['q'] = 13
 
 - c.values() gives occurance count of elements
+>>> dict_values([2, 3, 1])
 
 - c.keys() gives list of char (present in c)
+>>> dict_keys(['a', 'b', 'c'])
 
-- c.most_common() :List the n most common elements and their counts from the most
+- c.most_common(n) :List the n most common elements and their counts from the most
                    common to the least (i.e. in descending order).  If n is None,
                    then list all element counts.
+                   >>> [('b', 3), ('a', 2), ('c', 1)]
 
 - How to update a counter: # ADD in the second counter
     c.update(d)  # where d is another counter object
@@ -56,7 +59,7 @@ Three Ways to initialize a counter
 - Difference between "and" and "&":
     c = Counter(b=3, a=1)
     d = Counter(c=2, b=1)
-    NOTE: "c and d" means return c if not c else d
+    NOTE: "c and d" means return c if c is not None else d
           "c & d" is a bitwise operation and which evaluates both
     >> "c and d" gives c which is Counter({'b': 3, 'a': 1})
     >> "c | d" gives Counter({'b': 1}) which is Intersection is the minimum of corresponding counts.

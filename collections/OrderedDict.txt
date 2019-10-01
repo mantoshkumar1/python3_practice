@@ -1,10 +1,14 @@
-Python OrderedDict is just like a regular dictionary in python, but it also saves the order in which pairs were added. Actually, it is a subclass of ‘dict’.
+Python OrderedDict is just like a regular dictionary in python, but it also saves the order
+in which pairs were added. Actually, it is a subclass of ‘dict’.
 
-If a new entry overwrites an existing entry, the original insertion position is left unchanged. Deleting an entry and subsequentally "Reinserting" it will move it to the end.
+If a new entry overwrites an existing entry, the original insertion position is left unchanged.
+Deleting an entry and sub-sequentally "Reinserting" it will move it to the end.
 
 - Overwriting an existing entry
 ------------------------------------------------------------------------------
 If a new entry overwrites an existing entry, the original insertion position is left unchanged.
+
+from collections import OrderedDict
 
 >>> od = OrderedDict(a=1, b=12, c=3)
 >>> od
@@ -12,6 +16,12 @@ OrderedDict([('a', 1), ('b', 12), ('c', 3)])
 >>> od['b'] = 200
 >>> od
 OrderedDict([('a', 1), ('b', 200), ('c', 3)])
+
+- Other way to initialize an OrderedDict
+>>> aa = {'A': 1, 'B': 3}
+>>> od = OrderedDict(aa)
+>>> od
+OrderedDict([('A', 1), ('B', 3)])
 
 
 - Deleting and Reinserting a Key
@@ -120,7 +130,7 @@ class OrderedDict(builtins.dict)
  |
  |  fromkeys(...) from builtins.type
  |      OD.fromkeys(S[, v]) -> New ordered dictionary with keys from S.
- |      If not specified, the value defaults to None.
+ |      If not specified, the value d to None.
  |
  |  items(...)
  |      D.items() -> a set-like object providing a view on D's items
