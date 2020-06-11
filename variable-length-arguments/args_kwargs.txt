@@ -1,0 +1,56 @@
+Python args and kwargs
+----------------------------------------------------------
+Reference: https://realpython.com/python-kwargs-and-args/
+1. *args allows you to pass a varying number of positional arguments
+2. single asterisk (*) is used to UNPACK iterables.
+    Example: var = [1, 2]
+             *var =
+3. **kwargs works just like *args, but instead of accepting positional arguments it accepts keyword
+   (or named) arguments (aka dictionary).
+4. two asterisks (**) is used to UNPACK dictionaries.
+
+What is the use of args and kwargs:
+*args and **kwargs allow you to pass multiple arguments or keyword arguments to a function. This is useful especially
+if you don’t know up front all the values that should be passed to the function.
+
+
+
+
+Example 1:
+----------
+def my_func(arg1, arg2, arg3):
+    return sum(arg1, arg2, arg3)
+
+def args_func(*args):
+    return sum(args)
+------------------------------------------------------------------------------------------------------------
+kwargs = {'arg1': 'Value One', 'arg2': 'Value Two', 'arg3': 'Value Three'}
+# Now you can call the function with kwargs like this:
+my_func(**kwargs)  # here number of variables should be equal to variables in my_func definition
+
+Example 2:
+----------
+def my_func(**kwargs):
+    print kwargs.get('arg1')
+    print kwargs.get('arg2')
+    print kwargs.get('arg3')
+
+my_func(arg1=1, arg2=2, arg3=3)
+
+
+Example 3:
+----------
+def my_func(*args):
+    for i in args:
+        print(i)
+
+my_func(2, 5, 7, 9)
+my_func(2, 5)
+
+Example 4:
+----------
+def my_func(arg1, arg2, arg3):
+    ..........
+
+arr = (8, 9, 0)  # here number of var should be equal to var in my_func definition
+my_func(*arr)

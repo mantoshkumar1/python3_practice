@@ -1,0 +1,131 @@
+https://www.journaldev.com/15891/python-zip-function
+----------------------------------------------------
+
+- By passing no argument, zip returns an empty iterator.
+- However, if we pass two iterable object of same lengths, then an iterable of python tuples
+  will be returned where each element of the tuple will be from those iterable lists.
+
+- Python zip function is mainly used to combining data of two iterable elements together.
+
+-----------------------------------------
+Example:
+test = zip()
+
+# referring a zip class
+print('The type of an empty zip : ', type(test))
+
+list1 = ['Alpha', 'Beta', 'Gamma', 'Sigma']
+list2 = ['one', 'two', 'three', 'six']
+
+test = zip(list1, list2)  # zip the values
+
+print('\nPrinting the values of zip')
+for values in test:
+    print(values)  # print each tuples
+The type of an empty zip :  <class 'zip'>
+
+Output:
+Print the values of zip
+('Alpha', 'one')
+('Beta', 'two')
+('Gamma', 'three')
+('Sigma', 'six')
+
+---------------------------------------------------------------
+Python zip example with iterable elements of different lengths:
+---------------------------------------------------------------
+Now, what will happen if we try to zip two or more iterable elements? Well, In this case,
+the Python zip function will add items up to the lowest possible index of those given
+iterable elements.
+
+That means the count of tuples will be same as the lowest length of the given iterable element.
+The following example will help you understand this.
+
+Example:
+# list of 4 elements
+list1 = ('Alpha', 'Beta', 'Gamma', 'Sigma')
+# list of 5 elements
+list2 = {'one', 'two', 'three', 'six', 'five'}
+# list of 3 elments
+list3 = [1, 2, 3]
+
+test = zip(list1, list2, list3)  # zip the values
+cnt = 0
+
+print('\nPrinting the values of zip')
+for values in test:
+    print(values)  # print each tuples
+    cnt+=1
+
+print('Zip file contains ', cnt, 'elements.')
+
+Output:
+-------
+Printing the values of zip
+('Alpha', 'one', 1)
+('Beta', 'two', 2)
+('Gamma', 'three', 3)
+Zip file contains  3 elements.
+
+----------------------
+----------------------
+Python extract zip
+----------------------
+----------------------
+We can also extract data from the Python zip function. To extract zip, we have to use the same
+zip() function. But we have add an asterisk(*) in front of that list you get from zipped variable.
+
+You can use list() function to get a list from zipped variable. However, this will return a
+number of tuple. The number will differ according to the number of arguments that the zip
+function took to zip the data. See the following code to understand.
+
+Example:
+--------
+list1 = ['Alpha', 'Beta', 'Gamma', 'Sigma']
+list2 = ['one', 'two', 'three', 'six']
+
+test = zip(list1, list2)  # zip the values
+
+testList = list(test)
+
+a, b = zip( *testList )
+print('The first list was ', list(a));
+print('The second list was ', list(b));
+
+Output:
+-------
+The first list was  ['Alpha', 'Beta', 'Gamma', 'Sigma']
+The second list was  ['one', 'two', 'three', 'six']
+
+Note that if the initial lists are of different length, then you won’t get the original list back. For example, if
+list2 = ['one', 'two', 'three'] in above program, then output will be like below.
+
+The first list was  ['Alpha', 'Beta', 'Gamma']
+The second list was  ['one', 'two', 'three']
+
+----------------------------------------------------------------------------------------
+
+class zip(object)
+ |  zip(iter1 [,iter2 [...]]) --> zip object
+ |
+ |  Return a zip object whose .__next__() method returns a tuple where
+ |  the i-th element comes from the i-th iterable argument.  The .__next__()
+ |  method continues until the shortest iterable in the argument sequence
+ |  is exhausted and then it raises StopIteration.
+ |
+ |  Methods defined here:
+ |
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |
+ |  __iter__(self, /)
+ |      Implement iter(self).
+ |
+ |  __new__(*args, **kwargs) from builtins.type
+ |      Create and return a new object.  See help(type) for accurate signature.
+ |
+ |  __next__(self, /)
+ |      Implement next(self).
+ |
+ |  __reduce__(...)
+ |      Return state information for pickling.

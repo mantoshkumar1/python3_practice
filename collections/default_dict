@@ -1,0 +1,214 @@
+Dictionary is easy to use data-structure for storing data for later retrieval hashed by unique keys.
+Obviously, the keys should be immutable objects such as string, set or numbers (list can't be key).
+In some cases, a new key might always have a default value such as an empty list or a numeric
+value (basically anything). While this is easy to do manually in a standard dictionary, the defaultdict type automates
+and simplifies these kinds of operations by automatically assigning default values to any new hashable key entry.
+
+Definition of defaultdict:
+---------------------------------------------------------------
+class defaultdict(builtins.dict)
+|  defaultdict(default_factory[, ...]) --> dict with default factory
+|
+A defaultdict works exactly like a standard dictionary, but it is initialized with a function (“default_factory”) that
+takes no arguments and provides the default value for a nonexistent key.
+
+
+A defaultdict will never raise a KeyError, if default_factory is not None.
+>>> aa = defaultdict(lambda: 'Vanilla')
+>>> bb = ice_cream.get('a') ---> Value of bb will be None and aa will remain an empty default_dict.
+
+Any key that does not exist gets the value returned by the default_factory. However do remember to pass the
+default_factory to default_dict otherwise if the default_factory attribute is None, this raises a KeyError
+exception with the key as the argument (It will then behave just like a standard dictionary).
+
+Be sure to pass the function object to defaultdict(). Do not call the function,
+i.e. Use defaultdict(func), not defaultdict(func()).
+
+In the following example, a defaultdict is used for counting the frequency of characters in an input string.
+The default_factory is int, which in turn has a default value of zero.
+(Note: “lambda: 0″ would also work in this situation). For each character in the string, the value is incremented
+by one where the key is the character. We do not need to make sure that a character is already a key – it will use
+the default value of zero.
+
+Example 1:
+---------------------------------------------------------------
+from collections import defaultdict
+
+def print_dict(user_dict):
+    for key in user_dict:
+        print key + ": " + str(user_dict[key])
+
+def default_function(): return 0
+
+input_str = "abccddddeeee"
+
+# All these three methods produce same result.
+char_freq_dict = defaultdict(default_function)
+# char_freq_dict = defaultdict(int)
+# char_freq_dict = defaultdict(lambda: 0)
+
+for ch in input_str:
+    char_freq_dict[ch] += 1
+
+print_dict(char_freq_dict)
+
+Output:
+---------------------------------------------------------------
+a: 1
+c: 2
+b: 1
+e: 4
+d: 4
+
+You could accomplish the same objective using the standard dictionary in following way:
+def print_dict(user_dict):
+    for key in user_dict:
+        print key + ": " + str(user_dict[key])
+
+input_str = "abccddddeeee"
+
+char_freq_dict = dict()
+
+for ch in input_str:
+     if ch not in input_str:
+         char_freq_dict[ch] = 0
+
+     char_freq_dict[ch] += 1
+
+print_dict(char_freq_dict)
+
+
+In our next example, we use an empty list for any nonexistent key. The input provides a list of tuples consisting country and city. We want to build a dictionary where the keys are the countries and the values are lists of all cities for that country. To build this dictionary of lists, we use a defaultdict with a default_factory of the list. An empty list is created for each new (aka, nonexisting) key.
+
+Example 2:
+---------------------------------------------------------------
+from collections import defaultdict
+
+def default_function(): return []
+
+def print_dict(user_dict):
+    for key in user_dict:
+        print key + ": " + str(user_dict[key])
+
+
+input_list = [('germany', 'munich'), ('germany', 'berlin'), ('UK', 'london'), ('UK', 'bristol'), ('UK', 'liverpool'), ('sweden', 'stockholm')]
+
+# All these three methods produce same result.
+#country_city_dict = defaultdict(default_function)
+#country_city_dict = defaultdict(lambda:[])
+country_city_dict = defaultdict(list)
+
+for entry in input_list:
+    country = entry[0]
+    city = entry[1]
+    country_city_dict[country].append(city)
+
+print_dict(country_city_dict)
+
+
+Output:
+---------------------------------------------------------------
+sweden: ['stockholm']
+germany: ['munich', 'berlin']
+UK: ['london', 'bristol', 'liverpool']
+
+In the last example, we distinctly demonstrate that a defaultdict never raises a KeyError. Any key that does not exist gets the default value returned by the default_factory.
+
+Example 3:
+---------------------------------------------------------------
+from collections import defaultdict
+
+def print_dict(user_dict):
+    for key in user_dict:
+        print key + ": " + str(user_dict[key])
+
+num_dict = defaultdict(lambda: 'Magic, I am here')
+
+for item in ['a', 'b', 'c']:
+    if num_dict[item]: print item + " is already present"
+
+    # Notice, here we are trying to access value for a key in the if condition, so
+    # default_dict comes into the picture. if we instead use 'if item in num_dict:'
+    # , then we are not  really accessing this new_key in num_dict and thus
+    # the default_dict will not be kicked off for this key item.
+
+    else: print item + " is Missing"
+
+print_dict(num_dict)
+
+Output:
+---------------------------------------------------------------
+a is already present
+b is already present
+c is already present
+a: Magic, I am here
+c: Magic, I am here
+b: Magic, I am here
+
+Remember, a defaultdict will never raise a KeyError, if its default_factory is not None.
+
+Q: How to find the type of default_factory in defaultdict:
+Ans: Using default_factory class variable of defaultdict.
+    >>> a = defaultdict(int)
+    >>> print(a.default_factory)
+    <type 'int'>
+
+Q: What is the default value of default_factory in defaultdict?
+Ans: It's None.
+    >>> a = defaultdict()
+    >>> print(a.default_factory)
+    None
+
+
+Q: How can you intialize a defaultdict with given key-value?
+Answer: It's answer lies in defaultdict's definition and the way a dict can be initialized.
+            |  class defaultdict(builtins.dict)
+            |      defaultdict(default_factory[, ...]) --> dict with default factory
+            |
+            -------------------------------------------------------------------------------
+            |  class dict(object)
+            |  dict() -> new empty dictionary
+            |  dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs
+            |  dict(iterable) -> new dictionary initialized as if via:
+            |      d = {}
+            |      for k, v in iterable:
+            |          d[k] = v
+            |  dict(**kwargs) -> new dictionary initialized with the name=value pairs
+            |      in the keyword argument list.  For example:  dict(one=1, two=2)
+            |
+
+Thus a defaultdict can be initialized with a key-value pairs in following ways:
+>>> a = defaultdict(lambda: 0, {'a': 2, 'b': 3})
+>>> a = defaultdict(lambda: 0, [('a', 2), ('b', 3)])
+>>> a = defaultdict(lambda: 0, (('a', 2), ('b', 3)))
+>>> a = defaultdict(lambda: 0, a=2, b=3)
+>>> print(a) # in all above 4 cases, the output will be same.
+defaultdict(<function <lambda> at 0x7f91569eb730>, {'a': 2, 'b': 3})
+
+
+
+Q: Can defaultdict store a value which is not of same type as default_factory?
+Ans: Yes, it can. defaultdict can store any data type other than default_factory.
+     default_factory is only used to generate a value for missing key.
+     >>> a = defaultdict(lambda: '')
+     >>> a['x']
+     >>> a['y'] = 12
+     >>> print(a)
+     defaultdict(<function <lambda> at 0x7f9156a088c8>, {'x': '', 'y': 12})
+
+
+References:
+[1]. https://www.accelebrate.com/blog/using-defaultdict-python/
+[2]. https://docs.python.org/3.8/library/collections.html#collections.defaultdict
+[3]. https://www.geeksforgeeks.org/defaultdict-in-python/
+
+
+
+
+
+
+
+
+
+
+

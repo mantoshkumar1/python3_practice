@@ -132,3 +132,17 @@ sum(x) = 0 ==> here even though __next__ throws StopIteration, sum returns 0
 
 
 
+
+
+
+Notice:
+a = (1)  # this is an interger (NOT tuple)
+a = (1, )  # this is a tuple (NOT integer)
+
+>>> a = {}
+>>> type(a)
+<class 'dict'>
+>>> a = {1}
+>>> type(a)
+<class 'set'>
+

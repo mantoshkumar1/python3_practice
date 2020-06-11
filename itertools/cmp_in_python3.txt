@@ -60,11 +60,10 @@ the case in Python 2.)
 To avoid the hassle of providing all six functions, you can implement
 __eq__, __ne__, and only one of the ordering operators, and use the
 functools.total_ordering() decorator to fill in the rest.
-from functools import total_ordering
 
+from functools import total_ordering
 @total_ordering
 class Person(object):
-
     def __init__(self, firstname, lastname):
         self.first = firstname
         self.last = lastname
@@ -132,7 +131,7 @@ determines the sort order. The argument for cmp is a function that,
 like all cmp-style functions, returns a negative, zero, or positive
 result depending on the order of its two arguments.
 
-provide key = functools.cmp_to_key()
+Provide key = functools.cmp_to_key()
 
 Example:
     Move all the 0's to right in a list of 1s and 0s.
@@ -147,7 +146,7 @@ Example:
 
         return 0
     arr = [1, 0, 1,0,0, 1, 1]
-    sorted(arr, key=functools.cmp_to_key(cmp))  # [1, 1, 1, 1, 0, 0, 0]
+    sorted(arr, key=functools.cmp_to_key(mycmp))  # [1, 1, 1, 1, 0, 0, 0]
 
 
 VVI NOTE:

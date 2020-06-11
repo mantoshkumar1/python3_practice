@@ -1,0 +1,67 @@
+Textual data in Python is handled with str objects, or strings. Strings are immutable.
+
+String Methods:
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ |  count(...)
+ |      S.count(sub[, start[, end]]) -> int
+ |
+ |      Return the number of "non-overlapping" occurrences of substring sub in
+ |      string S[start:end].  Optional arguments start and end are
+ |      interpreted as in slice notation and are initialized with respectively 0 and len(S).
+
+  Note 1: The optional arguments start and end are not supposed to be provided as keyword arguments.
+          For example: 'aaa'.count('a', start=0, end=3) would throw a TypeError saying following:
+                        TypeError: count() takes no keyword arguments.
+
+                        [A TypeError is thrown when an operand or argument passed to a function is incompatible with
+                        the type expected by that operator or function.]
+
+  Note 2: What happens when you provide start < 0 and end >= len(str)??????? add examples. What if start and ends are defined in negative.
+
+  Note 2: "Non-overlapping" means, occurrences of two substring do not overlap each other. In simpler terms, it means while
+        looking for substr, keep going in the same direction (either forward or backward) and don't look back.
+
+  Example 1:
+    >>> s = 'ababa'
+    >>> s.count('aba')
+    1
+
+    Explanation: Here in string 'ababa', we find two occurrences of 'aba', respectively s[0: 3] and s[2:5]. So once the first occurrence
+    of 'aba' is detected in the string s, it means that index 2 has already been consumed. When you say non-overlapping
+    occurrences, it means that to find the next occurrence, the index should not go back or try to consume what has already
+    been consumed. Thus, Here substring 'aba' is being overlapped in string 'ababa'.
+
+  Example 2:
+    >>> s = 'ababa'
+    >>> s.count('ab')
+    >>> 2
+
+  Example 3:
+    >>> s ='ababa'
+    >>> s.count('a')
+    >>> 3
+
+  Example 4:
+    >>> s = 'ababa'
+    >>> s.count('bab')
+    >>> 1
+
+  Example 5:
+    >>> s = 'ababab'
+    >>>> s.count('bab')
+    >>> 1
+
+  Example 6:
+    >>> s = ''
+    >>> s.count('')
+    >>> 1
+
+  Example 7:
+    >>> s = 'abc'
+    >>> s.count('')
+    >>> 4
+
+   Example:
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+

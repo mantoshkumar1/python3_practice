@@ -33,3 +33,6 @@ Right way 3:
 for i in iter(x):
   print(i)
 
+--------
+If an object does not have a __str__() method, then str() falls back to returning repr(object).
+----
